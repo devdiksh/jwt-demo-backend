@@ -1,5 +1,6 @@
-const { authUser } = require("../authUsers");
+const { authUser, getUser } = require("../authUsers");
 const { signToken } = require("../jwt/signToken");
+const { authenticated } = require("../middlewares/authenticated");
 
 const initRoutes = (app) => {
   // Login
@@ -23,6 +24,25 @@ const initRoutes = (app) => {
       res.status(401).send({
         message: "Login Failed",
       });
+    }
+  });
+
+  app.get("/get-user", authenticated, (req, res) => {
+    // Authenticated Request
+    if (req.token) {
+      const user = getUser({
+        id: req.token.id,
+      });
+      if (user) {
+        res.status(200).send({
+          user,
+          message: "User Fetched Successfully",
+        });
+      } else {
+        res.status(402).send({
+          message: 'Bad Data'
+        })
+      }
     }
   });
 };
