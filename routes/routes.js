@@ -40,10 +40,21 @@ const initRoutes = (app) => {
         });
       } else {
         res.status(402).send({
-          message: 'Bad Data'
-        })
+          message: "Bad Data",
+        });
       }
     }
+  });
+
+  app.post("/logout", authenticated, (req, res) => {
+    // Revoke JWT
+    // Add Token to blacklist
+
+    console.log('JWT ID', req.token.jwtid)
+    res.status(200).send({
+      message: 'Logout Successful'
+    })
+
   });
 };
 
